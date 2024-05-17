@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+    <meta charset="UTF-8">
+    <title>Treino</title>
+</head>
+
+<style>
+    body{
+        padding: 0;
+        margin: 0;
+        height: 100vh;
+        width: 100vw;
+        background: #2268ff;
+
+        font-family: Verdana, Geneva, Tahoma, sans-serif;
+    }
+    #tr,#desc{
+        height: 80%;
+        width: 80%;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        font-size: 80px;
+    }
+    .treino, .descanso, body{
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+   
+      
+    }
+    .treino{
+        
+        background: rgb(224, 30, 30); 
+        height: 50%;
+        width: 100%;
+        justify-content: center;
+    }
+    .descanso {
+        justify-content: center;
+        margin-bottom: 10px;
+        background: #2268ff;
+        height: 30%;
+        width: 100%;
+    }
+.container {
+    opacity: 0.5;
+    top: -30px;
+  width: 100px;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 2;
+}
+#buttonIncrement, #buttonDecrement{
+    padding: 8px;
+    border: none;
+    margin: 2px;
+    border-radius: 6px;
+    font-size: large;
+}
+#counterValue{
+  font-size: 2rem;
+  width: 80%;
+  padding: 5px;
+  text-align: center;
+
+  
+  
+}
+#startButton{
+    margin: 15px;
+        padding: 20px;
+       background-color: rgb(247, 247, 247);
+        border-radius: 5px;
+        border: none;
+        cursor: pointer;
+        font-weight: bold;
+        font-family: 'Courier New', Courier, monospace;
+    }
+</style>
+<body>
+    <audio id="alarm-sound" src="descanso.mp3" preload="auto"></audio>
+  <audio id="alarmtr" src="treino.mp3" preload="auto"></audio>
+ 
+    <div class="treino">
+        <div id="tr">00:00</div>
+    </div> 
+    <div class="container">
+  <button id="buttonDecrement">-</button>
+  <input type="text" value="0" disabled id="counterValue">
+  <button id="buttonIncrement">+</button>
+</div>
+    <div class="descanso">
+      <div id="desc">00:00</div>
+      
+    </div>
+    <input type="button" value="PLAY" id="startButton"/>
+ 
+  
+  
+  <script>
+const counter = document.querySelector('#counterValue');
+const buttonDecrement = document.querySelector('#buttonDecrement');
+const buttonIncrement = document.querySelector('#buttonIncrement');
+
+var value = counter.value;
+
+buttonIncrement.addEventListener('click',() => {
+  value = ++value;
+  counter.value = value;
+});
+buttonDecrement.addEventListener('click', () => {
+  value = value !== 0 ? --value : 0;
+  counter.value = value;
+});
+
+
+  
+var c=0;
+    
+  
+        document.getElementById('startButton').addEventListener('click', function () {
+            const alarmSound = document.getElementById('alarm-sound');
+
+            // Ensure the play() action is initiated by a user gesture
+            alarmSound.play().then(() => {
+              
+                alarmSound.pause();
+                alarmSound.currentTime = 0;
+                startTimer(10, document.getElementById('tr'));
+
+                this.style.display = 'none'; // Esconde o botão após clicar
+            }).catch(error => {
+                console.error('Erro ao tentar reproduzir o som:', error);
+            });
+        });
+  
+      document.getElementById('startButton').addEventListener('click', function () {
+            const alarmSoundtr = document.getElementById('alarmtr');
+
+            // Ensure the play() action is initiated by a user gesture
+            alarmSoundtr.play().then(() => {
+              
+                alarmSoundtr.pause();
+                alarmSoundtr.currentTime = 0;
+               
+
+        
+            }).catch(error => {
+                console.error('Erro ao tentar reproduzir o som:', error);
+            });
+        });
+  
+
+  
+  
+  
+  
+  
+  
+        function startTimer(duration, display) {
+      if(value != c){
+        
+            
+            let timer = duration, minutes, seconds;
+            const interval = setInterval(function () {
+                minutes = parseInt(timer / 60, 10);
+                seconds = parseInt(timer % 60, 10);
+
+                minutes = minutes < 10 ? "0" + minutes : minutes;
+                seconds = seconds < 10 ? "0" + seconds : seconds;
+
+                display.textContent = minutes + ":" + seconds;
+
+                if (--timer < 0) {
+                    clearInterval(interval);
+                    display.textContent = "Tempo esgotado!";
+                    document.getElementById('alarm-sound').play();
+                  
+                  
+                  descansoTime(10,document.getElementById('desc'))
+                }
+            }, 1000);
+        c++;
+        
+      }
+        
+        
+        }
+  
+  
+  function descansoTime(duration, display) {
+            let timer = duration, minutes, seconds;
+            const interval = setInterval(function () {
+                minutes = parseInt(timer / 60, 10);
+                seconds = parseInt(timer % 60, 10);
+
+                minutes = minutes < 10 ? "0" + minutes : minutes;
+                seconds = seconds < 10 ? "0" + seconds : seconds;
+
+                display.textContent = minutes + ":" + seconds;
+
+                if (--timer < 0) {
+                    clearInterval(interval);
+                    display.textContent = "Acabou o descanso";
+                    document.getElementById('alarmtr').play();
+                  startTimer(10, document.getElementById('tr'));
+                  
+                }
+            }, 1000);
+        }
+  
+  
+  
+  
+  
+    </script>
+</body>
+</html>

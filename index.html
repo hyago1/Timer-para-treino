@@ -108,7 +108,7 @@ var c=0;
                     document.getElementById('alarm-sound').play();
                   
                   
-                  descansoTime(10,document.getElementById('desc'))
+                  descansoTime(60,document.getElementById('desc'))
                 }
             }, 1000);
         c++;
@@ -137,12 +137,14 @@ var c=0;
                     clearInterval(interval);
                     display.textContent = "Acabou o descanso";
                     document.getElementById('alarmtr').play();
-                  startTimer(10, document.getElementById('tr'));
+                  startTimer((60*5), document.getElementById('tr'));
                   
                 }
             }, 1000);
 
 
+            }else{
+              display.textContent = "xD"
             }
         }
   
